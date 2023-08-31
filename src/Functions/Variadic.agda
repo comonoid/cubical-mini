@@ -22,6 +22,10 @@ Levels (suc (suc n)) = Level × Levels (suc n)
 ℓsup 1             l        = l
 ℓsup (suc (suc n)) (l , ls) = l ⊔ ℓsup _ ls
 
+ℓhsup : ℕ → Level → Level
+ℓhsup 0       _ = 0ℓ
+ℓhsup (suc n) l = l
+
 ℓreplicate : ∀ n → Level → Levels n
 ℓreplicate 0             _ = _
 ℓreplicate 1             ℓ = ℓ

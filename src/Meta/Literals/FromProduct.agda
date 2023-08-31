@@ -8,7 +8,7 @@ open import Data.Nat.Base public
 open import Data.Product.Base public
   using (HProduct)
 
-record From-product {ℓ} (A : Type ℓ) (T : @0 ℕ → Type ℓ) : Type ℓ where
+record From-product {ℓ} (A : Type ℓ) (T : @0 ℕ → Type ℓ) : Typeω where
   field from-prod : ∀ n → HProduct n A → T n
 
 [_] : ∀ {ℓ} {A : Type ℓ} {T : @0 ℕ → Type ℓ} {n} ⦃ fp : From-product A T ⦄

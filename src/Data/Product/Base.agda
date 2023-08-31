@@ -18,8 +18,8 @@ Product 0             _        = ⊤
 Product 1             A        = A
 Product (suc (suc n)) (A , As) = A × Product (suc n) As
 
-HProduct : ∀ (n : ℕ) {ℓ} → Type ℓ → Type ℓ
-HProduct 0             _ = Lift _ ⊤
+HProduct : ∀ n {ℓ} → Type ℓ → Type (ℓhsup n ℓ)
+HProduct 0             _ = ⊤
 HProduct 1             A = A
 HProduct (suc (suc n)) A = A × HProduct (suc n) A
 
@@ -29,6 +29,7 @@ uncurryⁿ 0             f          = λ _ → f
 uncurryⁿ 1             f          = f
 uncurryⁿ (suc (suc n)) f (a , as) = uncurryⁿ (suc n) (f a) as
 
+-- FIXME bad inference, rewrite as a macro
 infixr -1 _$ⁿ_
 _$ⁿ_ : ∀ {n ls} {As : Types n ls} → funⁿ As B → Product n As → B
 _$ⁿ_ = uncurryⁿ _

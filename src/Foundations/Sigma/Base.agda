@@ -24,12 +24,6 @@ infixr 4 _×_
 _×_ : (A : Type ℓ) (B : Type ℓ′) → Type (level-of-type A ⊔ level-of-type B)
 A × B = Σ[ _ ꞉ A ] B
 
-infix 2 Σ-syntax′
-Σ-syntax′ : (B : A → Type ℓ′) → Type _
-Σ-syntax′ {A} = Σ A
-{-# INLINE Σ-syntax′ #-}
-syntax Σ-syntax′ (λ x → B) = Σ[ x ] B
-
 <_,_> : {C : ∀ {a} → B a → Type ℓ″}
       → (f : (x : A) → B x)
       → ((x : A) → C (f x))

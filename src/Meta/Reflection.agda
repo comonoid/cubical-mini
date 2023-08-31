@@ -61,6 +61,13 @@ argH  = arg (arg-info hidden (modality relevant quantity-ω))
 argH0 = arg (arg-info hidden (modality relevant quantity-0))
 argN  = arg (arg-info visible (modality relevant quantity-ω))
 
+visible? : Visibility → Bool
+visible? visible = true
+visible? _       = false
+
+visible-arg? : Arg A → Bool
+visible-arg? (arg (arg-info v _) _) = visible? v
+
 Fun : Type ℓ → Type ℓ′ → Type (ℓ ⊔ ℓ′)
 Fun A B = A → B
 
@@ -279,3 +286,31 @@ print-depth key level nesting es = debugPrint key level $
 
 pattern nat-lit n =
   def (quote Number.fromNat) (_ ∷ _ ∷ _ ∷ lit (nat n) v∷ _)
+
+private
+  Bool→ℕ : Bool → ℕ
+  Bool→ℕ false = 0
+  Bool→ℕ true  = 1
+
+arity-ty : Type′ → ℕ
+arity-ty (pi a (abs _ b)) = Bool→ℕ (visible-arg? a) + arity-ty b
+arity-ty _                = 0
+
+arity-name : Name → TC ℕ
+arity-name nam = do
+  t ← getType nam >>= normalise
+  pure $ arity-ty t
+
+arity-term : Term → TC ℕ
+arity-term (lit (name n)) = arity-name n
+arity-term (lit _) = pure 0
+arity-term (con c args) = do
+  ca ← arity-name c
+  pure $ ca ∸ length (filter visible-arg? args)
+arity-term (def f args) = do
+  fa ← arity-name f
+  pure $ fa ∸ length (filter visible-arg? args)
+arity-term (lam v (abs _ t)) = do
+  ta ← arity-term t
+  pure $ Bool→ℕ (visible? v) + ta
+arity-term _ = pure 0 -- TODO pattern matching lambdas

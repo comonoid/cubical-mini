@@ -4,10 +4,12 @@ module Correspondences.Base where
 open import Foundations.Base
 open import Foundations.Equiv
 
+open import Meta.Reflection
 open import Meta.Search.HLevel
 
 open import Structures.n-Type
 
+open import Data.List.Base
 open import Data.Product.Base public
 
 -- Heterogeneous correspondences
@@ -44,25 +46,22 @@ n-Corr³ = n-Corr 3
 n-Corr⁴ = n-Corr 4
 n-Corr⁵ = n-Corr 5
 
-⌞_⌟ⁿ : {ℓ : Level} {arity : ℕ} {n : HLevel} {ls : Levels arity} {As : Types _ ls} → n-Corr arity n ℓ As → Corr arity ℓ As
-⌞_⌟ⁿ {arity = 0}           C   = ⌞ C ⌟
-⌞_⌟ⁿ {arity = 1}           C a = ⌞ C a ⌟
-⌞_⌟ⁿ {arity = suc (suc _)} C a = ⌞ C a ⌟ⁿ
+Carrierⁿ : {ℓ : Level} {arity : ℕ} {n : HLevel} {ls : Levels arity} {As : Types _ ls} → n-Corr arity n ℓ As → Corr arity ℓ As
+Carrierⁿ {arity = 0}           C   = ⌞ C ⌟
+Carrierⁿ {arity = 1}           C a = ⌞ C a ⌟
+Carrierⁿ {arity = suc (suc _)} C a = Carrierⁿ $ C a
+{-# INLINE Carrierⁿ #-}
 
-⌞_⌟¹ : {ℓ : Level} {n : HLevel} {ls : Levels 1} {As : Types _ ls} → n-Corr _ n ℓ As → _
-⌞_⌟¹ = ⌞_⌟ⁿ {arity = 1}
+pattern carrierⁿ n t = def (quote Carrierⁿ) (unknown h∷ lit (nat n) h∷ unknown h∷ unknown h∷ unknown h∷ t v∷ [])
+macro
+  Carrier! : Term → Term → TC ⊤
+  Carrier! t hole = do
+    ty ← inferType t >>= normalise
+    let arity = arity-ty ty
+    unify hole $ carrierⁿ arity t
 
-⌞_⌟² : {ℓ : Level} {n : HLevel} {ls : Levels 2} {As : Types _ ls} → n-Corr _ n ℓ As → _
-⌞_⌟² = ⌞_⌟ⁿ {arity = 2}
+  syntax Carrier! C = ⌞ C ⌟ⁿ
 
-⌞_⌟³ : {ℓ : Level} {n : HLevel} {ls : Levels 3} {As : Types _ ls} → n-Corr _ n ℓ As → _
-⌞_⌟³ = ⌞_⌟ⁿ {arity = 3}
-
-⌞_⌟⁴ : {ℓ : Level} {n : HLevel} {ls : Levels 4} {As : Types _ ls} → n-Corr _ n ℓ As → _
-⌞_⌟⁴ = ⌞_⌟ⁿ {arity = 4}
-
-⌞_⌟⁵ : {ℓ : Level} {n : HLevel} {ls : Levels 5} {As : Types _ ls} → n-Corr _ n ℓ As → _
-⌞_⌟⁵ = ⌞_⌟ⁿ {arity = 5}
 
 -- Propositionally valued correspondence is called a relation
 Rel
@@ -96,84 +95,74 @@ private variable
   n : HLevel
   arity : ℕ
 
-infix 10 Universal Universal¹ Universal² Universal³ Universal⁴ Universal⁵
-
 Universalⁿ : {ls : Levels arity} {As : Types arity ls} → Corr arity ℓ As → Type (ℓ ⊔ ℓsup arity ls)
 Universalⁿ {0}                         P = P
 Universalⁿ {1}           {As = A}      P = Π[ a ꞉ A ] P a
 Universalⁿ {suc (suc _)} {As = A , As} P = Π[ a ꞉ A ] Universalⁿ (P a)
 {-# INLINE Universalⁿ #-}
-
 syntax Universalⁿ P = Πⁿ[ P ]
-
-Universal = Universalⁿ {arity = 1}
-syntax Universal P = Π[ P ]
-Universal¹ = Universalⁿ {arity = 1}
-syntax Universal¹ P = Π¹[ P ]
-Universal² = Universalⁿ {arity = 2}
-syntax Universal² P = Π²[ P ]
-Universal³ = Universalⁿ {arity = 3}
-syntax Universal³ P = Π³[ P ]
-Universal⁴ = Universalⁿ {arity = 4}
-syntax Universal⁴ P = Π⁴[ P ]
-Universal⁵ = Universalⁿ {arity = 5}
-syntax Universal⁵ P = Π⁵[ P ]
-
-infix 10 IUniversal IUniversal¹ IUniversal² IUniversal³ IUniversal⁴ IUniversal⁵
 
 IUniversalⁿ : {ls : Levels arity} {As : Types arity ls} → Corr arity ℓ As → Type (ℓ ⊔ ℓsup arity ls)
 IUniversalⁿ {0}                         P = P
 IUniversalⁿ {1}           {As = A}      P = ∀{a} → P a
 IUniversalⁿ {suc (suc _)} {As = A , As} P = ∀{a} → IUniversalⁿ (P a)
 {-# INLINE IUniversalⁿ #-}
-
 syntax IUniversalⁿ P = ∀ⁿ[ P ]
 
-IUniversal = IUniversalⁿ {arity = 1}
-syntax IUniversal P = ∀[ P ]
-IUniversal¹ = IUniversalⁿ {arity = 1}
-syntax IUniversal¹ P = ∀¹[ P ]
-IUniversal² = IUniversalⁿ {arity = 2}
-syntax IUniversal² P = ∀²[ P ]
-IUniversal³ = IUniversalⁿ {arity = 3}
-syntax IUniversal³ P = ∀³[ P ]
-IUniversal⁴ = IUniversalⁿ {arity = 4}
-syntax IUniversal⁴ P = ∀⁴[ P ]
-IUniversal⁵ = IUniversalⁿ {arity = 5}
-syntax IUniversal⁵ P = ∀⁵[ P ]
+pattern quantⁿ q n t = def q (lit (nat n) h∷ unknown h∷ unknown h∷ unknown h∷ t v∷ [])
 
-_⇒ⁿ_ : {ls : Levels arity} {As : Types arity ls} → Corr arity ℓ As → Corr arity ℓ′ As → Corr arity (ℓ ⊔ ℓ′) As
-_⇒ⁿ_ {0}           P Q = P → Q
-_⇒ⁿ_ {1}           P Q = λ x → P x → Q x
-_⇒ⁿ_ {suc (suc _)} P Q = λ x → P x ⇒ⁿ Q x
+Quantor : Name → Term → Term → TC ⊤
+Quantor nam t hole = do
+  ty ← inferType t >>= normalise
+  let arity = arity-ty ty
+  unify hole $ quantⁿ nam arity t
 
-_⇒⁰_ = _⇒ⁿ_ {arity = 0}
-_⇒_  = _⇒ⁿ_ {arity = 1}
-_⇒¹_ = _⇒ⁿ_ {arity = 1}
-_⇒²_ = _⇒ⁿ_ {arity = 2}
-_⇒³_ = _⇒ⁿ_ {arity = 3}
-_⇒⁴_ = _⇒ⁿ_ {arity = 4}
-_⇒⁵_ = _⇒ⁿ_ {arity = 5}
+infix 10 Universal! IUniversal!
+macro
+  Universal! : Term → Term → TC ⊤
+  Universal! = Quantor (quote Universalⁿ)
+  syntax Universal! P = Π[ P ]
 
+  IUniversal! : Term → Term → TC ⊤
+  IUniversal! = Quantor (quote IUniversalⁿ)
+  syntax IUniversal! P = ∀[ P ]
+
+Implⁿ : {ls : Levels arity} {As : Types arity ls} → Corr arity ℓ As → Corr arity ℓ′ As → Corr arity (ℓ ⊔ ℓ′) As
+Implⁿ {0}           P Q = P → Q
+Implⁿ {1}           P Q = λ x → P x → Q x
+Implⁿ {suc (suc _)} P Q = λ x → Implⁿ (P x) (Q x)
+{-# INLINE Implⁿ #-}
+syntax Implⁿ P Q = P ⇒ⁿ Q
+
+pattern implⁿ  n p q = def (quote Implⁿ) (lit (nat n) h∷ unknown h∷ unknown h∷ p v∷ q v∷ [])
+macro
+  Impl! : Term → Term → Term → TC ⊤
+  Impl! p q hole = do
+    pty ← inferType p >>= normalise
+    qty ← inferType q >>= normalise
+    let arity = arity-ty pty
+    unify hole $ implⁿ arity p q
+
+  syntax Impl! P Q = P ⇒ Q
 
 -- Binary homogeneous correspondences
 
-Reflexive : Corr 2 ℓ (A , A) → Type _
+Reflexive : Corr² ℓ (A , A) → Type _
 Reflexive _~_ = ∀ {x} → x ~ x
 
-Symmetric : Corr 2 ℓ (A , A) → Type _
+Symmetric : Corr² ℓ (A , A) → Type _
 Symmetric _~_ = ∀ {x y} → (x ~ y) → (y ~ x)
 
-Transitive : Corr 2 ℓ (A , A) → Type _
+Transitive : Corr² ℓ (A , A) → Type _
 Transitive _~_ = ∀ {x y z} → (x ~ y) → (y ~ z) → (x ~ z)
 
-record Equivalence (_~_ : Corr 2 ℓ (A , A)) : Type (level-of-type A ⊔ ℓ) where
+record Equivalence (_~_ : Corr² ℓ (A , A)) : Type (level-of-type A ⊔ ℓ) where
   field
     reflᶜ : Reflexive _~_
     symᶜ  : Symmetric _~_
     _∙ᶜ_  : Transitive _~_
 
-record is-congruence (_~_ : Corr 2 ℓ (A , A)) : Type (level-of-type A ⊔ ℓ) where
+record is-congruence (_~_ : Corr² ℓ (A , A)) : Type (level-of-type A ⊔ ℓ) where
   field
     equivalenceᶜ : Equivalence _~_
     instance

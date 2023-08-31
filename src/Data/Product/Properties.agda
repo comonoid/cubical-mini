@@ -25,7 +25,7 @@ HProduct≃Vec {A} = iso→equiv (f , iso g a→b→a b→a→b) where
   f {n = suc (suc n)} (x , xs) = x ∷ f xs
 
   g : Vec A n → HProduct n A
-  g {n = 0} _       = lift tt
+  g {n = 0} _       = tt
   g {n = 1} (x ∷ _) = x
   g {n = suc (suc n)} (x ∷ xs) = x , g xs
 
@@ -44,7 +44,7 @@ HProduct≃Vec {A} = iso→equiv (f , iso g a→b→a b→a→b) where
 instance
   hproduct-is-fin-set : {ℓ : Level} {A : Type ℓ} {n : ℕ}
                   → ⦃ is-fin-set A ⦄ → is-fin-set (HProduct n A)
-  hproduct-is-fin-set {A} {0} = lift-is-fin-set ⊤-is-fin-set
+  hproduct-is-fin-set {A} {0} = ⊤-is-fin-set
   hproduct-is-fin-set {A} {1} ⦃ (A-fin) ⦄ = A-fin
   hproduct-is-fin-set {A} {suc (suc n)} ⦃ (A-fin) ⦄ =
     ×-is-fin-set A-fin (hproduct-is-fin-set {A = A} {n = suc n} ⦃ A-fin ⦄)
