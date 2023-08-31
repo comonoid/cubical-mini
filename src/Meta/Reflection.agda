@@ -13,14 +13,15 @@ open import Meta.Alt      public
 open import Meta.Traverse public
 
 open import Data.Bool.Base
+open import Data.Fin.Base
 open import Data.List.Base
-open import Data.List.Operations
+open import Data.List.Operations as List
 open import Data.List.Instances.FromProduct
 open import Data.List.Instances.Traverse
 open import Data.Maybe.Base
 open import Data.Nat.Base
 open import Data.Vec.Base
-open import Data.Vec.Operations.Inductive
+open import Data.Vec.Operations.Inductive as Vec
 open import Data.String.Base
 
 open import Agda.Builtin.Reflection public
@@ -292,13 +293,29 @@ private
   Bool→ℕ false = 0
   Bool→ℕ true  = 1
 
+Arg-vec : @0 ℕ → Type
+Arg-vec = Vec (Arg Term)
+
+Arg-selector : @0 ℕ → Type
+Arg-selector = Fin
+
+Args : Type
+Args = Σ[ arity ꞉ ℕ ] Arg-vec arity
+
+make-spine : Type′ → Args
+make-spine (pi (arg ai _) (abs _ b)) with make-spine b
+... | n , ts = suc n , arg ai unknown ∷ ts
+make-spine _ = 0 , []
+
+make-vis-spine : Type′ → Args
+make-vis-spine = Vec.filter visible-arg? ∘ snd ∘ make-spine
+
 arity-ty : Type′ → ℕ
-arity-ty (pi a (abs _ b)) = Bool→ℕ (visible-arg? a) + arity-ty b
-arity-ty _                = 0
+arity-ty = fst ∘ make-vis-spine
 
 arity-name : Name → TC ℕ
 arity-name nam = do
-  t ← getType nam >>= normalise
+  t ← getType nam
   pure $ arity-ty t
 
 arity-term : Term → TC ℕ
@@ -306,10 +323,10 @@ arity-term (lit (name n)) = arity-name n
 arity-term (lit _) = pure 0
 arity-term (con c args) = do
   ca ← arity-name c
-  pure $ ca ∸ length (filter visible-arg? args)
+  pure $ ca ∸ length (List.filter visible-arg? args)
 arity-term (def f args) = do
   fa ← arity-name f
-  pure $ fa ∸ length (filter visible-arg? args)
+  pure $ fa ∸ length (List.filter visible-arg? args)
 arity-term (lam v (abs _ t)) = do
   ta ← arity-term t
   pure $ Bool→ℕ (visible? v) + ta

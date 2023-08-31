@@ -10,6 +10,7 @@ open import Foundations.Univalence
 open import Meta.Bind
 open import Meta.Search.Discrete
 open import Meta.Search.HLevel
+open import Meta.Variadic
 
 open import Correspondences.Discrete
 open import Correspondences.Exhaustible

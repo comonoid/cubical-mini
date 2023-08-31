@@ -5,9 +5,11 @@ open import Foundations.Base
 
 open import Correspondences.Erased
 
+open import Data.Bool.Base
 open import Data.Fin.Base
 open import Data.List.Base
 open import Data.List.Operations
+  hiding (filter)
 
 open import Data.Vec.Base public
 
@@ -39,3 +41,9 @@ list→vec [] = 0 , [] , refl
 list→vec (x ∷ xs) =
   let len′ , xs′ , p = list→vec xs
   in suc len′ , x ∷ xs′ , ap suc p
+
+filter : (A → Bool) → Vec A n → Σ[ m ꞉ ℕ ] Vec A m
+filter _  []       = 0 , []
+filter p? (x ∷ xs) with filter p? xs | p? x
+... | m , ys | false =     m ,     ys
+... | m , ys | true  = suc m , x ∷ ys

@@ -5,6 +5,7 @@ open import Foundations.Base
 open import Foundations.Equiv
 
 open import Meta.Search.HLevel
+open import Meta.Variadic
 
 open import Structures.n-Type
 

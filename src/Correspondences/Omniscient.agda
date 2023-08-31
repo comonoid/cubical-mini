@@ -4,6 +4,7 @@ module Correspondences.Omniscient where
 open import Foundations.Base
 
 open import Meta.Search.HLevel
+open import Meta.Variadic
 
 open import Correspondences.Base public
 open import Correspondences.Classical

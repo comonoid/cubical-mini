@@ -4,6 +4,7 @@ module Data.Nat.Instances.Discrete where
 open import Foundations.Base
 
 open import Meta.Search.Discrete
+open import Meta.Variadic
 
 open import Correspondences.Decidable
 

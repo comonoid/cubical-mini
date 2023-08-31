@@ -37,14 +37,10 @@ private
   goal-is-stratified : Goal-strat → Type
   goal-is-stratified = goal-strat-rec ⊤ ⊥
 
-  Selector : @0 ℕ → Type
-  Selector = Fin
-
-select-arg : Visibility → {@0 m : ℕ} → Selector m → Vec (Arg Term) m → TC Term
-select-arg vis idx args = do
+select-arg : {@0 m : ℕ} → Arg-selector m → Arg-vec m → TC Term
+select-arg idx args = do
   vis-arg v x ← pure $ lookup args idx where
     _ → typeError "Bad argument selector"
-  guard (v visibility=? vis)
   pure x
 
 Level-data : Goal-strat → Type
@@ -63,14 +59,14 @@ level-term {(none)} _ = lit (string "dummy")
 level-term {(by-hlevel)} = id
 
 Goal-data : Type
-Goal-data = Σ[ args-length ꞉ ℕ ] Selector args-length
+Goal-data = Σ[ args-length ꞉ ℕ ] Arg-selector args-length
 
 record Tactic-desc (goal-name : Name) (goal-strat : Goal-strat) : Type where
   field
     args-length : ℕ
-    goal-selector : Selector args-length
+    goal-selector : Arg-selector args-length
     level-selector
-      : {w : goal-is-stratified goal-strat} → Selector args-length
+      : {w : goal-is-stratified goal-strat} → Arg-selector args-length
     aliases
       : {w : goal-is-stratified goal-strat}
       → List (Name × ℕ × Goal-data)
@@ -84,6 +80,7 @@ record Tactic-desc (goal-name : Name) (goal-strat : Goal-strat) : Type where
   atoms = goal-name ∷ other-atoms
 
 open Tactic-desc
+
 
 data Arg-spec : Goal-strat → Type where
   `level-suc    : Arg-spec by-hlevel
@@ -114,8 +111,8 @@ record Struct-proj-desc
     projection-args-length : ℕ
     level-selector
       : {z : goal-is-native goal-nat} {w : goal-is-stratified goal-strat}
-      → Selector struct-args-length
-    carrier-selector       : Selector projection-args-length
+      → Arg-selector struct-args-length
+    carrier-selector       : Arg-selector projection-args-length
 
 open Struct-proj-desc
 
@@ -131,7 +128,7 @@ backtrack note = do
   typeError $ "Search hit a dead-end: " ∷ note
 
 private
-  args-list→args-vec : (desired-length : ℕ) → List (Arg Term) → TC (Vec (Arg Term) desired-length)
+  args-list→args-vec : (desired-length : ℕ) → List (Arg Term) → TC (Arg-vec desired-length)
   args-list→args-vec 0 [] = pure []
   args-list→args-vec 0 (_ ∷ _) = backtrack "Too many arguments"
   args-list→args-vec (suc _) [] = backtrack "Too few arguments"
@@ -155,7 +152,7 @@ private
   decompose-alias actual target args (alias-name , lv , alias-args-length , sel) = do
     guard (actual name=? alias-name)
     argsᵥ ← args-list→args-vec alias-args-length args
-    ty ← select-arg visible sel argsᵥ
+    ty ← select-arg sel argsᵥ
     pure $ fixed-level lv , ty
 
   -- TODO refactor this abomination
@@ -167,7 +164,7 @@ private
             , "\nIt's " , termErr x ]
     guard (actual-goal-name name=? goal-name)
     argsᵥ ← args-list→args-vec (td .args-length) args
-    ty ← select-arg visible (td .goal-selector) argsᵥ
+    ty ← select-arg (td .goal-selector) argsᵥ
     pure (tt , ty)
   decompose-goal′ {goal-name} {goal-strat = by-hlevel} td ty = do
     def actual-goal-name args ← pure ty where
@@ -175,8 +172,8 @@ private
     nondet (eff List) (td .aliases) (decompose-alias actual-goal-name ty args) <|> do
       guard (actual-goal-name name=? goal-name)
       argsᵥ ← args-list→args-vec (td .args-length) args
-      ty ← select-arg visible (td .goal-selector) argsᵥ
-      xlv ← select-arg visible (td .level-selector) argsᵥ
+      ty ← select-arg (td .goal-selector) argsᵥ
+      xlv ← select-arg (td .level-selector) argsᵥ
       pure (xlv , ty)
 
   decompose-goal : Tactic-desc goal-name goal-strat → Term → TC (Level-data goal-strat × Term)
@@ -224,7 +221,7 @@ private
       _ → backtrack [ "Structure type isn't an application of " , nameErr goal-name ]
     guard (actual-goal-name name=? (spd .struct-name))
     argsᵥ ← args-list→args-vec (spd .struct-args-length) args
-    lv ← select-arg visible (spd .level-selector) argsᵥ
+    lv ← select-arg (spd .level-selector) argsᵥ
     normalise lv
 
   treat-as-structured-type : Tactic-desc goal-name goal-strat → Struct-proj-desc goal-name goal-strat carrier-name goal-nat → Term → TC ⊤
@@ -237,7 +234,7 @@ private
       where what → backtrack [ "Thing isn't an application, it is " , termErr what ]
 
     argsᵥ ← args-list→args-vec (spd .projection-args-length) args
-    carrier-term ← select-arg visible (spd .carrier-selector) argsᵥ
+    carrier-term ← select-arg (spd .carrier-selector) argsᵥ
     go td spd wanted-xlevel carrier-term
     where
       go : ∀{gn gs gin} (td : Tactic-desc gn gs) (spd : Struct-proj-desc gn gs carrier-name gin) → Level-data gs → Term → TC ⊤

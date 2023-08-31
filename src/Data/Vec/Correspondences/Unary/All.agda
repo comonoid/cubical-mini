@@ -4,6 +4,7 @@ module Data.Vec.Correspondences.Unary.All where
 open import Foundations.Base
 
 open import Meta.Search.Decidable
+open import Meta.Variadic
 
 open import Structures.Base
 

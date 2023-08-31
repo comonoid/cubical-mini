@@ -4,13 +4,13 @@ module Correspondences.Base where
 open import Foundations.Base
 open import Foundations.Equiv
 
-open import Meta.Reflection
 open import Meta.Search.HLevel
 
 open import Structures.n-Type
 
-open import Data.List.Base
 open import Data.Product.Base public
+
+open import Truncation.Propositional.Base
 
 -- Heterogeneous correspondences
 Corr
@@ -52,16 +52,6 @@ Carrierⁿ {arity = 1}           C a = ⌞ C a ⌟
 Carrierⁿ {arity = suc (suc _)} C a = Carrierⁿ $ C a
 {-# INLINE Carrierⁿ #-}
 
-pattern carrierⁿ n t = def (quote Carrierⁿ) (unknown h∷ lit (nat n) h∷ unknown h∷ unknown h∷ unknown h∷ t v∷ [])
-macro
-  Carrier! : Term → Term → TC ⊤
-  Carrier! t hole = do
-    ty ← inferType t >>= normalise
-    let arity = arity-ty ty
-    unify hole $ carrierⁿ arity t
-
-  syntax Carrier! C = ⌞ C ⌟ⁿ
-
 
 -- Propositionally valued correspondence is called a relation
 Rel
@@ -95,6 +85,20 @@ private variable
   n : HLevel
   arity : ℕ
 
+Existentialⁿ : {ls : Levels arity} {As : Types arity ls} → Corr arity ℓ As → Type (ℓ ⊔ ℓsup arity ls)
+Existentialⁿ {0}                         P = P
+Existentialⁿ {1}           {As = A}      P = Σ[ a ꞉ A ] P a
+Existentialⁿ {suc (suc _)} {As = A , As} P = Σ[ a ꞉ A ] Existentialⁿ (P a)
+{-# INLINE Existentialⁿ #-}
+syntax Existentialⁿ P = Σⁿ[ P ]
+
+Existential₁ⁿ : {ls : Levels arity} {As : Types arity ls} → Corr arity ℓ As → Type (ℓ ⊔ ℓsup arity ls)
+Existential₁ⁿ {0}                         P = ∥ P ∥₁
+Existential₁ⁿ {1}           {As = A}      P = ∃[ a ꞉ A ] P a
+Existential₁ⁿ {suc (suc _)} {As = A , As} P = ∥ Σ[ a ꞉ A ] Existentialⁿ (P a) ∥₁
+{-# INLINE Existential₁ⁿ #-}
+syntax Existential₁ⁿ P = ∃ⁿ[ P ]
+
 Universalⁿ : {ls : Levels arity} {As : Types arity ls} → Corr arity ℓ As → Type (ℓ ⊔ ℓsup arity ls)
 Universalⁿ {0}                         P = P
 Universalⁿ {1}           {As = A}      P = Π[ a ꞉ A ] P a
@@ -109,24 +113,6 @@ IUniversalⁿ {suc (suc _)} {As = A , As} P = ∀{a} → IUniversalⁿ (P a)
 {-# INLINE IUniversalⁿ #-}
 syntax IUniversalⁿ P = ∀ⁿ[ P ]
 
-pattern quantⁿ q n t = def q (lit (nat n) h∷ unknown h∷ unknown h∷ unknown h∷ t v∷ [])
-
-Quantor : Name → Term → Term → TC ⊤
-Quantor nam t hole = do
-  ty ← inferType t >>= normalise
-  let arity = arity-ty ty
-  unify hole $ quantⁿ nam arity t
-
-infix 10 Universal! IUniversal!
-macro
-  Universal! : Term → Term → TC ⊤
-  Universal! = Quantor (quote Universalⁿ)
-  syntax Universal! P = Π[ P ]
-
-  IUniversal! : Term → Term → TC ⊤
-  IUniversal! = Quantor (quote IUniversalⁿ)
-  syntax IUniversal! P = ∀[ P ]
-
 Implⁿ : {ls : Levels arity} {As : Types arity ls} → Corr arity ℓ As → Corr arity ℓ′ As → Corr arity (ℓ ⊔ ℓ′) As
 Implⁿ {0}           P Q = P → Q
 Implⁿ {1}           P Q = λ x → P x → Q x
@@ -134,16 +120,6 @@ Implⁿ {suc (suc _)} P Q = λ x → Implⁿ (P x) (Q x)
 {-# INLINE Implⁿ #-}
 syntax Implⁿ P Q = P ⇒ⁿ Q
 
-pattern implⁿ  n p q = def (quote Implⁿ) (lit (nat n) h∷ unknown h∷ unknown h∷ p v∷ q v∷ [])
-macro
-  Impl! : Term → Term → Term → TC ⊤
-  Impl! p q hole = do
-    pty ← inferType p >>= normalise
-    qty ← inferType q >>= normalise
-    let arity = arity-ty pty
-    unify hole $ implⁿ arity p q
-
-  syntax Impl! P Q = P ⇒ Q
 
 -- Binary homogeneous correspondences
 

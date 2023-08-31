@@ -6,9 +6,11 @@ open import Foundations.Equiv
 
 open import Correspondences.Erased
 
+open import Data.Bool.Base
 open import Data.FinSub.Base
 open import Data.List.Base
 open import Data.List.Operations
+  hiding (filter)
 
 open import Data.Vec.Base public
 
@@ -56,3 +58,9 @@ opaque
     lemma₂ : {n : ℕ} → Π[ xs ꞉ Vec A n ] (tabulate (lookup xs) ＝ xs)
     lemma₂ {n = 0} [] = refl
     lemma₂ {n = suc n} (x ∷ xs) = ap (x ∷_) (lemma₂ _)
+
+filter : (A → Bool) → Vec A n → Σ[ m ꞉ ℕ ] Vec A m
+filter _  []       = 0 , []
+filter p? (x ∷ xs) with filter p? xs | p? x
+... | m , ys | false =     m ,     ys
+... | m , ys | true  = suc m , x ∷ ys

@@ -9,6 +9,7 @@ open import Meta.Reflection
 open import Meta.Search.Base public
 open import Meta.Search.Decidable
 open import Meta.Search.HLevel
+open import Meta.Variadic
 
 open import Correspondences.Decidable
 open import Correspondences.Discrete

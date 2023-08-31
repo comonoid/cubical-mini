@@ -3,16 +3,12 @@ module Correspondences.Decidable where
 
 open import Foundations.Base
 
-open import Meta.Reflection
-
 open import Correspondences.Base public
 open import Correspondences.Classical
 
 open import Data.Bool.Base
-open import Data.Bool.Path
 open import Data.Dec.Base as Dec
 open import Data.Empty.Base as ⊥
-open import Data.List.Base
 open import Data.Nat.Base
 
 private variable
@@ -51,14 +47,6 @@ fun-decision (yes a) (yes b) .proof = ofʸ λ _ → b
 Decidableⁿ : (arity : ℕ) {ls : Levels arity} {As : Types arity ls} → Pred _ (Corr arity ℓ As)
 Decidableⁿ arity P = Πⁿ[ mapⁿ _ Dec P ]
 
-pattern decidableⁿ n t = def (quote Decidableⁿ) (unknown h∷ lit (nat n) v∷ unknown h∷ unknown h∷ t v∷ [])
-macro
-  Decidable : Term → Term → TC ⊤
-  Decidable t hole = do
-    ty ← inferType t >>= normalise
-    let arity = arity-ty ty
-    unify hole $ decidableⁿ arity t
-
 
 -- Decision procedure
 DProc
@@ -79,14 +67,6 @@ Reflectsⁿ : (arity : ℕ) {ls : Levels arity} {As : Types _ ls} → Corr _ ℓ
 Reflectsⁿ 0                           P d = Reflects⁰ P d
 Reflectsⁿ 1             {As = A}      P d = Π[ x ꞉ A ] Reflectsⁿ _ (P x) (d x)
 Reflectsⁿ (suc (suc _)) {As = A , As} P d = Π[ x ꞉ A ] Reflectsⁿ _ (P x) (d x)
-
-pattern reflectsⁿ n c d = def (quote Reflectsⁿ) (unknown h∷ lit (nat n) v∷ unknown h∷ unknown h∷ c v∷ d v∷ [])
-macro
-  Reflects : Term → Term → Term → TC ⊤
-  Reflects c d hole = do
-    cty ← inferType c >>= normalise
-    let arity = arity-ty cty
-    unify hole $ reflectsⁿ arity c d
 
 reflects→decidable
   : {ls : Levels n} {As : Types n ls} {P : Corr n ℓ As} {d : DProc n As}
