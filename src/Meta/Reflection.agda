@@ -302,6 +302,24 @@ Arg-selector = Fin
 Args : Type
 Args = Σ[ arity ꞉ ℕ ] Arg-vec arity
 
+arg-replace : {@0 n : ℕ} → Arg-selector n → Term → Arg-vec n → Arg-vec n
+arg-replace sel t xs with lookup xs sel
+... | arg i _ = replace sel (arg i t) xs
+
+args-list→args-vec : (desired-length : ℕ) → List (Arg Term) → TC (Arg-vec desired-length)
+args-list→args-vec 0 [] = pure []
+args-list→args-vec (suc dl) (x ∷ xs) = do
+  ih ← args-list→args-vec dl xs
+  pure $ x ∷ ih
+args-list→args-vec _ _ = typeError [ "Wrong number of arguments" ]
+
+args-ensure-length : (desired-len : ℕ) → Args → TC (Arg-vec desired-len)
+args-ensure-length 0        (0     , _)  = pure []
+args-ensure-length (suc dl) (suc n , x ∷ xs) = do
+  res ← args-ensure-length dl $ n , xs
+  pure $ x ∷ res
+args-ensure-length _ _ = typeError [ "Wrong number of arguments" ]
+
 make-spine : Type′ → Args
 make-spine (pi (arg ai _) (abs _ b)) with make-spine b
 ... | n , ts = suc n , arg ai unknown ∷ ts

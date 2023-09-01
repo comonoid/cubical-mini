@@ -39,8 +39,8 @@ all-++-right : {xs : Vec A m} → All P (xs ++ ys) → All P ys
 all-++-right {xs = []}    ps       = ps
 all-++-right {xs = _ ∷ _} (_ ∷ ps) = all-++-right ps
 
--- FIXME something's wrong, seems like @0 modality is not supported
-all? : {P : Pred ℓ′ A} → Decidable P → Decidableⁿ 1 (λ (xs : Vec A n) → All P xs)
+
+all? : {P : Pred ℓ′ A} → Decidable P → Decidable (λ (xs : Vec A n) → All P xs)
 all? P? []       = yes []
 all? P? (x ∷ xs) =
   Dec.map (λ { (px , ps) → px ∷ ps })

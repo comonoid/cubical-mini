@@ -128,14 +128,6 @@ backtrack note = do
   typeError $ "Search hit a dead-end: " ∷ note
 
 private
-  args-list→args-vec : (desired-length : ℕ) → List (Arg Term) → TC (Arg-vec desired-length)
-  args-list→args-vec 0 [] = pure []
-  args-list→args-vec 0 (_ ∷ _) = backtrack "Too many arguments"
-  args-list→args-vec (suc _) [] = backtrack "Too few arguments"
-  args-list→args-vec (suc dl) (x ∷ xs) = do
-    ih ← args-list→args-vec dl xs
-    pure $ x ∷ ih
-
   compose-goal : Tactic-desc goal-name goal-strat → Level-data goal-strat → Term → Term
   compose-goal {goal-name} td xlv ty = def goal-name $ vec→list (go td xlv base-args) .fst where
     base-args = replace (td .goal-selector) (varg ty) $ replicate (td .args-length) (harg Term.unknown)

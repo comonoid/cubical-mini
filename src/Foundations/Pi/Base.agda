@@ -49,11 +49,12 @@ module _ where
     B : A → Type ℓ′
     C : (a : A) → B a → Type ℓ″
 
-  infixr -1 _$_ _&_
+  infixr -1 _$_
   _$_ : (f : (a : A) → B a) (x : A) → B x
   f $ a = f a
   {-# INLINE _$_ #-}
 
+  infixl -1 _&_
   _&_ : (x : A) (f : (a : A) → B a) → B x
   a & f = f a
   {-# INLINE _&_ #-}
