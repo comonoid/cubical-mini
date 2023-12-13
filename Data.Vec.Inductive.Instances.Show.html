@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Inductive.Instances.Show</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--safe</a> <a id="20" class="Symbol">#-}</a>
+<a id="24" class="Keyword">module</a> <a id="31" href="Data.Vec.Inductive.Instances.Show.html" class="Module">Data.Vec.Inductive.Instances.Show</a> <a id="65" class="Keyword">where</a>
+
+<a id="72" class="Keyword">open</a> <a id="77" class="Keyword">import</a> <a id="84" href="Foundations.Base.html" class="Module">Foundations.Base</a>
+
+<a id="102" class="Keyword">open</a> <a id="107" class="Keyword">import</a> <a id="114" href="Meta.Deriving.Show.html" class="Module">Meta.Deriving.Show</a>
+
+<a id="134" class="Keyword">open</a> <a id="139" class="Keyword">import</a> <a id="146" href="Data.Vec.Inductive.Base.html" class="Module">Data.Vec.Inductive.Base</a>
+
+<a id="171" class="Comment">-- TODO erased modality</a>
+<a id="195" class="Comment">-- instance</a>
+<a id="207" class="Comment">--   unquoteDecl Show-Vec = derive-show Show-Vec (quote Vec)</a>
+
+<a id="269" class="Comment">-- private module _ where</a>
+<a id="295" class="Comment">--   open import Data.Nat.Instances.Show</a>
+
+<a id="337" class="Comment">--   _ : show (1 ∷ 2 ∷ 3 ∷ []) ＝ &quot;1 ∷ 2 ∷ 3 ∷ []&quot;</a>
+<a id="387" class="Comment">--   _ = refl</a>
+
+<a id="402" class="Comment">--   _ : show ((1 ∷ []) ∷ (2 ∷ []) ∷ []) ＝ &quot;(1 ∷ []) ∷ (2 ∷ []) ∷ []&quot;</a>
+<a id="472" class="Comment">--   _ = refl</a>
+</pre></body></html>
