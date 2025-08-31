@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Reflects.Instances.Monoidal</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--safe</a> <a id="20" class="Symbol">#-}</a>
+<a id="24" class="Keyword">module</a> <a id="31" href="Data.Reflects.Instances.Monoidal.html" class="Module">Data.Reflects.Instances.Monoidal</a> <a id="64" class="Keyword">where</a>
+
+<a id="71" class="Keyword">open</a> <a id="76" class="Keyword">import</a> <a id="83" href="Foundations.Base.html" class="Module">Foundations.Base</a>
+
+<a id="101" class="Keyword">open</a> <a id="106" class="Keyword">import</a> <a id="113" href="Meta.Effect.Base.html" class="Module">Meta.Effect.Base</a>
+<a id="130" class="Keyword">open</a> <a id="135" class="Keyword">import</a> <a id="142" href="Meta.Effect.Monoidal.html" class="Module">Meta.Effect.Monoidal</a>
+
+<a id="164" class="Keyword">open</a> <a id="169" class="Keyword">import</a> <a id="176" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a>
+<a id="191" class="Keyword">open</a> <a id="196" class="Keyword">import</a> <a id="203" href="Data.Reflects.Base.html" class="Module">Data.Reflects.Base</a>
+
+<a id="223" class="Keyword">open</a> <a id="228" href="Meta.Effect.Monoidal.html#279" class="Module">Monoidal</a> <a id="237" class="Symbol">⦃</a> <a id="239" class="Symbol">...</a> <a id="243" class="Symbol">⦄</a>
+
+<a id="246" class="Keyword">instance</a>
+  <a id="Monoidal-Reflects"></a><a id="257" href="Data.Reflects.Instances.Monoidal.html#257" class="Function">Monoidal-Reflects</a> <a id="275" class="Symbol">:</a> <a id="277" href="Meta.Effect.Monoidal.html#279" class="Record">Monoidal</a> <a id="286" class="Symbol">(</a><a id="287" href="Meta.Effect.Base.html#127" class="InductiveConstructor">eff</a> <a id="291" class="Symbol">λ</a> <a id="293" href="Data.Reflects.Instances.Monoidal.html#293" class="Bound">T</a> <a id="295" class="Symbol">→</a> <a id="297" href="Data.Reflects.Base.html#188" class="Datatype">Reflects⁰</a> <a id="307" href="Data.Reflects.Instances.Monoidal.html#293" class="Bound">T</a> <a id="309" href="Agda.Builtin.Bool.html#198" class="InductiveConstructor">true</a><a id="313" class="Symbol">)</a>
+  <a id="317" href="Data.Reflects.Instances.Monoidal.html#257" class="Function">Monoidal-Reflects</a> <a id="335" class="Symbol">.</a><a id="336" href="Meta.Effect.Monoidal.html#357" class="Field">unit</a> <a id="341" class="Symbol">=</a> <a id="343" href="Data.Reflects.Base.html#239" class="InductiveConstructor">ofʸ</a> <a id="347" class="Symbol">_</a>
+  <a id="351" href="Data.Reflects.Instances.Monoidal.html#257" class="Function">Monoidal-Reflects</a> <a id="369" class="Symbol">.</a><a id="370" href="Meta.Effect.Monoidal.html#375" class="Field Operator">_&lt;,&gt;_</a> <a id="376" class="Symbol">(</a><a id="377" href="Data.Reflects.Base.html#239" class="InductiveConstructor">ofʸ</a> <a id="381" href="Data.Reflects.Instances.Monoidal.html#381" class="Bound">ra</a><a id="383" class="Symbol">)</a> <a id="385" class="Symbol">(</a><a id="386" href="Data.Reflects.Base.html#239" class="InductiveConstructor">ofʸ</a> <a id="390" href="Data.Reflects.Instances.Monoidal.html#390" class="Bound">rb</a><a id="392" class="Symbol">)</a> <a id="394" class="Symbol">=</a> <a id="396" href="Data.Reflects.Base.html#239" class="InductiveConstructor">ofʸ</a> <a id="400" class="Symbol">(</a><a id="401" href="Data.Reflects.Instances.Monoidal.html#381" class="Bound">ra</a> <a id="404" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="406" href="Data.Reflects.Instances.Monoidal.html#390" class="Bound">rb</a><a id="408" class="Symbol">)</a>
+</pre></body></html>

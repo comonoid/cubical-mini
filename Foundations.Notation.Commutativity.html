@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Foundations.Notation.Commutativity</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--safe</a> <a id="20" class="Symbol">#-}</a>
+<a id="24" class="Keyword">module</a> <a id="31" href="Foundations.Notation.Commutativity.html" class="Module">Foundations.Notation.Commutativity</a> <a id="66" class="Keyword">where</a>
+
+<a id="73" class="Keyword">open</a> <a id="78" class="Keyword">import</a> <a id="85" href="Foundations.Prim.Kan.html" class="Module">Foundations.Prim.Kan</a>
+<a id="106" class="Keyword">open</a> <a id="111" class="Keyword">import</a> <a id="118" href="Foundations.Prim.Type.html" class="Module">Foundations.Prim.Type</a>
+<a id="140" class="Keyword">open</a> <a id="145" class="Keyword">import</a> <a id="152" href="Agda.Builtin.Unit.html" class="Module">Agda.Builtin.Unit</a>
+
+<a id="171" class="Keyword">open</a> <a id="176" class="Keyword">import</a> <a id="183" href="Foundations.Notation.Composition.html" class="Module">Foundations.Notation.Composition</a>
+<a id="216" class="Keyword">open</a> <a id="221" class="Keyword">import</a> <a id="228" href="Foundations.Notation.Duality.html" class="Module">Foundations.Notation.Duality</a>
+
+<a id="258" class="Comment">-- A ---|--&gt; C</a>
+<a id="273" class="Comment">-- |         |</a>
+<a id="288" class="Comment">-- |         |</a>
+<a id="303" class="Comment">-- v         v</a>
+<a id="318" class="Comment">-- B ---|--&gt; D</a>
+
+<a id="334" class="Comment">-- most generic square</a>
+<a id="357" class="Comment">-- module _</a>
+<a id="369" class="Comment">--   {ℓa ℓb ℓc ℓd ℓf ℓg ℓh ℓk ℓs : Level}</a>
+<a id="411" class="Comment">--   {A : 𝒰 ℓa} {B : 𝒰 ℓb} {C : 𝒰 ℓc} {D : 𝒰 ℓd}</a>
+<a id="460" class="Comment">--   (F : A → B → 𝒰 ℓf) (G : A → C → 𝒰 ℓg)</a>
+<a id="503" class="Comment">--   (H : C → D → 𝒰 ℓh) (K : B → D → 𝒰 ℓk)</a>
+<a id="546" class="Comment">--   (S : ∀{a b c d} (f : F a b) (g : G a c) (h : H c d) (k : K b d) → 𝒰 ℓs) where</a>
+
+<a id="630" class="Comment">-- damn, generalized commutativity got hands</a>
+<a id="675" class="Comment">-- what should it be, naturality?</a>
+
+<a id="710" class="Keyword">module</a> <a id="717" href="Foundations.Notation.Commutativity.html#717" class="Module">_</a> <a id="719" class="Symbol">{</a><a id="720" href="Foundations.Notation.Commutativity.html#720" class="Bound">ℓ</a><a id="721" class="Symbol">}</a> <a id="723" class="Symbol">(</a><a id="724" href="Foundations.Notation.Commutativity.html#724" class="Bound">A</a> <a id="726" class="Symbol">:</a> <a id="728" href="Foundations.Prim.Type.html#322" class="Primitive">𝒰</a> <a id="730" href="Foundations.Notation.Commutativity.html#720" class="Bound">ℓ</a><a id="731" class="Symbol">)</a> <a id="733" class="Keyword">where</a>
+  <a id="741" href="Foundations.Notation.Commutativity.html#741" class="Function">Commutativity</a> <a id="755" class="Symbol">:</a> <a id="757" class="Symbol">(</a><a id="758" href="Foundations.Notation.Commutativity.html#758" class="Bound">t</a> <a id="760" class="Symbol">:</a> <a id="762" href="Foundations.Notation.Commutativity.html#724" class="Bound">A</a> <a id="764" class="Symbol">→</a> <a id="766" href="Foundations.Notation.Commutativity.html#724" class="Bound">A</a> <a id="768" class="Symbol">→</a> <a id="770" href="Foundations.Notation.Commutativity.html#724" class="Bound">A</a><a id="771" class="Symbol">)</a> <a id="773" class="Symbol">(</a><a id="774" href="Foundations.Notation.Commutativity.html#774" class="Bound">x</a> <a id="776" href="Foundations.Notation.Commutativity.html#776" class="Bound">y</a> <a id="778" class="Symbol">:</a> <a id="780" href="Foundations.Notation.Commutativity.html#724" class="Bound">A</a><a id="781" class="Symbol">)</a> <a id="783" class="Symbol">→</a> <a id="785" href="Foundations.Prim.Type.html#322" class="Primitive">𝒰</a> <a id="787" href="Foundations.Notation.Commutativity.html#720" class="Bound">ℓ</a>
+  <a id="791" href="Foundations.Notation.Commutativity.html#741" class="Function">Commutativity</a> <a id="805" href="Foundations.Notation.Commutativity.html#805" class="Bound">t</a> <a id="807" href="Foundations.Notation.Commutativity.html#807" class="Bound">x</a> <a id="809" href="Foundations.Notation.Commutativity.html#809" class="Bound">y</a> <a id="811" class="Symbol">=</a> <a id="813" href="Foundations.Notation.Commutativity.html#805" class="Bound">t</a> <a id="815" href="Foundations.Notation.Commutativity.html#809" class="Bound">y</a> <a id="817" href="Foundations.Notation.Commutativity.html#807" class="Bound">x</a> <a id="819" href="Foundations.Prim.Kan.html#1264" class="Function Operator">＝</a> <a id="821" href="Foundations.Notation.Commutativity.html#805" class="Bound">t</a> <a id="823" href="Foundations.Notation.Commutativity.html#807" class="Bound">x</a> <a id="825" href="Foundations.Notation.Commutativity.html#809" class="Bound">y</a>
+
+  <a id="830" class="Keyword">record</a> <a id="837" href="Foundations.Notation.Commutativity.html#837" class="Record">Comm</a> <a id="842" class="Symbol">⦃</a> <a id="844" href="Foundations.Notation.Commutativity.html#844" class="Bound">t</a> <a id="846" class="Symbol">:</a> <a id="848" href="Foundations.Notation.Composition.html#1017" class="Record">Has-binary-op</a> <a id="862" href="Foundations.Notation.Commutativity.html#724" class="Bound">A</a> <a id="864" class="Symbol">⦄</a> <a id="866" class="Symbol">:</a> <a id="868" href="Foundations.Prim.Type.html#322" class="Primitive">𝒰</a> <a id="870" href="Foundations.Notation.Commutativity.html#720" class="Bound">ℓ</a> <a id="872" class="Keyword">where</a>
+    <a id="882" class="Keyword">no-eta-equality</a>
+    <a id="902" class="Keyword">field</a> <a id="908" href="Foundations.Notation.Commutativity.html#908" class="Field">&lt;&gt;-comm</a> <a id="916" class="Symbol">:</a> <a id="918" class="Symbol">∀</a> <a id="920" href="Foundations.Notation.Commutativity.html#920" class="Bound">x</a> <a id="922" href="Foundations.Notation.Commutativity.html#922" class="Bound">y</a> <a id="924" class="Symbol">→</a> <a id="926" href="Foundations.Notation.Commutativity.html#741" class="Function">Commutativity</a> <a id="940" class="Symbol">(</a><a id="941" href="Foundations.Notation.Commutativity.html#844" class="Bound">t</a> <a id="943" class="Symbol">.</a><a id="944" href="Foundations.Notation.Composition.html#1099" class="Field Operator">_&lt;&gt;_</a><a id="948" class="Symbol">)</a> <a id="950" href="Foundations.Notation.Commutativity.html#920" class="Bound">x</a> <a id="952" href="Foundations.Notation.Commutativity.html#922" class="Bound">y</a>
+
+<a id="955" class="Keyword">open</a> <a id="960" href="Foundations.Notation.Commutativity.html#837" class="Module">Comm</a> <a id="965" class="Symbol">⦃</a> <a id="967" class="Symbol">...</a> <a id="971" class="Symbol">⦄</a> <a id="973" class="Keyword">public</a>
+</pre></body></html>

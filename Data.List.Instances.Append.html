@@ -4,16 +4,16 @@
 
 <a id="65" class="Keyword">open</a> <a id="70" class="Keyword">import</a> <a id="77" href="Foundations.Base.html" class="Module">Foundations.Base</a>
 
-<a id="95" class="Keyword">open</a> <a id="100" class="Keyword">import</a> <a id="107" href="Meta.Append.html" class="Module">Meta.Append</a>
+<a id="95" class="Keyword">open</a> <a id="100" class="Keyword">import</a> <a id="107" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="122" class="Symbol">as</a> <a id="125" class="Module">List</a>
 
-<a id="120" class="Keyword">open</a> <a id="125" class="Keyword">import</a> <a id="132" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="147" class="Symbol">as</a> <a id="150" class="Module">List</a>
+<a id="131" class="Keyword">private</a> <a id="139" class="Keyword">variable</a>
+  <a id="150" href="Data.List.Instances.Append.html#150" class="Generalizable">ℓ</a> <a id="152" class="Symbol">:</a> <a id="154" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+  <a id="162" href="Data.List.Instances.Append.html#162" class="Generalizable">A</a> <a id="164" class="Symbol">:</a> <a id="166" href="Foundations.Prim.Type.html#322" class="Primitive">𝒰</a> <a id="168" href="Data.List.Instances.Append.html#150" class="Generalizable">ℓ</a>
 
-<a id="156" class="Keyword">private</a> <a id="164" class="Keyword">variable</a>
-  <a id="175" href="Data.List.Instances.Append.html#175" class="Generalizable">ℓ</a> <a id="177" class="Symbol">:</a> <a id="179" href="Agda.Primitive.html#742" class="Postulate">Level</a>
-  <a id="187" href="Data.List.Instances.Append.html#187" class="Generalizable">A</a> <a id="189" class="Symbol">:</a> <a id="191" href="Foundations.Prim.Type.html#322" class="Primitive">Type</a> <a id="196" href="Data.List.Instances.Append.html#175" class="Generalizable">ℓ</a>
+<a id="171" class="Keyword">instance</a>
+  <a id="Pointed-List"></a><a id="182" href="Data.List.Instances.Append.html#182" class="Function">Pointed-List</a> <a id="195" class="Symbol">:</a> <a id="197" href="Foundations.Notation.Reflexivity.html#482" class="Record">Pointed</a> <a id="205" class="Symbol">(</a><a id="206" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="211" href="Data.List.Instances.Append.html#162" class="Generalizable">A</a><a id="212" class="Symbol">)</a>
+  <a id="216" href="Data.List.Instances.Append.html#182" class="Function">Pointed-List</a> <a id="229" class="Symbol">.</a><a id="230" href="Foundations.Notation.Reflexivity.html#542" class="Field">mempty</a> <a id="237" class="Symbol">=</a> <a id="239" href="Agda.Builtin.List.html#184" class="InductiveConstructor">[]</a>
 
-<a id="199" class="Keyword">instance</a>
-  <a id="Append-List"></a><a id="210" href="Data.List.Instances.Append.html#210" class="Function">Append-List</a> <a id="222" class="Symbol">:</a> <a id="224" href="Meta.Append.html#105" class="Record">Append</a> <a id="231" class="Symbol">(</a><a id="232" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="237" href="Data.List.Instances.Append.html#187" class="Generalizable">A</a><a id="238" class="Symbol">)</a>
-  <a id="242" href="Data.List.Instances.Append.html#210" class="Function">Append-List</a> <a id="254" class="Symbol">.</a><a id="255" href="Meta.Append.html#173" class="Field">mempty</a> <a id="262" class="Symbol">=</a> <a id="264" href="Agda.Builtin.List.html#184" class="InductiveConstructor">[]</a>
-  <a id="269" href="Data.List.Instances.Append.html#210" class="Function">Append-List</a> <a id="281" class="Symbol">.</a><a id="282" href="Meta.Append.html#188" class="Field Operator">_&lt;&gt;_</a> <a id="287" class="Symbol">=</a> <a id="289" href="Data.List.Base.html#708" class="Function Operator">_++_</a>
+  <a id="Has-binary-op-List"></a><a id="245" href="Data.List.Instances.Append.html#245" class="Function">Has-binary-op-List</a> <a id="264" class="Symbol">:</a> <a id="266" href="Foundations.Notation.Composition.html#1017" class="Record">Has-binary-op</a> <a id="280" class="Symbol">(</a><a id="281" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="286" href="Data.List.Instances.Append.html#162" class="Generalizable">A</a><a id="287" class="Symbol">)</a>
+  <a id="291" href="Data.List.Instances.Append.html#245" class="Function">Has-binary-op-List</a> <a id="310" class="Symbol">.</a><a id="311" href="Foundations.Notation.Composition.html#1099" class="Field Operator">_&lt;&gt;_</a> <a id="316" class="Symbol">=</a> <a id="318" href="Data.List.Base.html#784" class="Function Operator">_++_</a>
 </pre></body></html>

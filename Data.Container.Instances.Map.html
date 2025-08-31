@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Container.Instances.Map</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--safe</a> <a id="20" class="Symbol">#-}</a>
+<a id="24" class="Keyword">module</a> <a id="31" href="Data.Container.Instances.Map.html" class="Module">Data.Container.Instances.Map</a> <a id="60" class="Keyword">where</a>
+
+<a id="67" class="Keyword">open</a> <a id="72" class="Keyword">import</a> <a id="79" href="Foundations.Prelude.html" class="Module">Foundations.Prelude</a>
+
+<a id="100" class="Keyword">open</a> <a id="105" class="Keyword">import</a> <a id="112" href="Meta.Effect.Base.html" class="Module">Meta.Effect.Base</a>
+<a id="129" class="Keyword">open</a> <a id="134" class="Keyword">import</a> <a id="141" href="Meta.Effect.Map.html" class="Module">Meta.Effect.Map</a>
+
+<a id="158" class="Keyword">open</a> <a id="163" class="Keyword">import</a> <a id="170" href="Data.Container.Base.html" class="Module">Data.Container.Base</a>
+<a id="190" class="Keyword">open</a> <a id="195" class="Keyword">import</a> <a id="202" href="Data.Container.Instances.Brackets.html" class="Module">Data.Container.Instances.Brackets</a>
+
+<a id="237" class="Keyword">private</a> <a id="245" class="Keyword">variable</a>
+  <a id="256" href="Data.Container.Instances.Map.html#256" class="Generalizable">s</a> <a id="258" href="Data.Container.Instances.Map.html#258" class="Generalizable">p</a> <a id="260" class="Symbol">:</a> <a id="262" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+  <a id="270" href="Data.Container.Instances.Map.html#270" class="Generalizable">C</a> <a id="272" class="Symbol">:</a> <a id="274" href="Data.Container.Base.html#128" class="Record">Container</a> <a id="284" href="Data.Container.Instances.Map.html#256" class="Generalizable">s</a> <a id="286" href="Data.Container.Instances.Map.html#258" class="Generalizable">p</a>
+
+<a id="289" class="Keyword">open</a> <a id="294" href="Meta.Effect.Map.Base.html#188" class="Module">Map</a> <a id="298" class="Symbol">⦃</a> <a id="300" class="Symbol">...</a> <a id="304" class="Symbol">⦄</a>
+<a id="306" class="Keyword">open</a> <a id="311" href="Meta.Effect.Map.Lawful.html#317" class="Module">Lawful-Map</a> <a id="322" class="Symbol">⦃</a> <a id="324" class="Symbol">...</a> <a id="328" class="Symbol">⦄</a>
+
+<a id="331" class="Keyword">instance</a>
+  <a id="Map-Container"></a><a id="342" href="Data.Container.Instances.Map.html#342" class="Function">Map-Container</a> <a id="356" class="Symbol">:</a> <a id="358" href="Meta.Effect.Map.Base.html#188" class="Record">Map</a> <a id="362" class="Symbol">(</a><a id="363" href="Meta.Effect.Base.html#127" class="InductiveConstructor">eff</a> <a id="367" href="Foundations.Notation.Brackets.html#227" class="Field Operator">⟦</a> <a id="369" href="Data.Container.Instances.Map.html#270" class="Generalizable">C</a> <a id="371" href="Foundations.Notation.Brackets.html#227" class="Field Operator">⟧</a><a id="372" class="Symbol">)</a>
+  <a id="376" href="Data.Container.Instances.Map.html#342" class="Function">Map-Container</a> <a id="390" class="Symbol">.</a><a id="391" href="Meta.Effect.Map.Base.html#257" class="Field">map</a> <a id="395" href="Data.Container.Instances.Map.html#395" class="Bound">f</a> <a id="397" class="Symbol">=</a> <a id="399" href="Foundations.Sigma.Base.html#2232" class="Function">second</a> <a id="406" class="Symbol">(</a><a id="407" href="Data.Container.Instances.Map.html#395" class="Bound">f</a> <a id="409" href="Foundations.Pi.Base.html#3422" class="Function Operator">∘_</a><a id="411" class="Symbol">)</a>
+  <a id="415" class="Symbol">{-#</a> <a id="419" class="Keyword">INCOHERENT</a> <a id="430" href="Data.Container.Instances.Map.html#342" class="Function">Map-Container</a> <a id="444" class="Symbol">#-}</a>
+
+  <a id="451" class="Comment">-- excellent</a>
+  <a id="Lawful-Map-Container"></a><a id="466" href="Data.Container.Instances.Map.html#466" class="Function">Lawful-Map-Container</a> <a id="487" class="Symbol">:</a> <a id="489" href="Meta.Effect.Map.Lawful.html#317" class="Record">Lawful-Map</a> <a id="500" class="Symbol">(</a><a id="501" href="Meta.Effect.Base.html#127" class="InductiveConstructor">eff</a> <a id="505" href="Foundations.Notation.Brackets.html#227" class="Field Operator">⟦</a> <a id="507" href="Data.Container.Instances.Map.html#270" class="Generalizable">C</a> <a id="509" href="Foundations.Notation.Brackets.html#227" class="Field Operator">⟧</a><a id="510" class="Symbol">)</a>
+  <a id="514" href="Data.Container.Instances.Map.html#466" class="Function">Lawful-Map-Container</a> <a id="535" class="Symbol">.</a><a id="536" href="Meta.Effect.Map.Lawful.html#411" class="Field">map-pres-id</a> <a id="548" class="Symbol">=</a> <a id="550" href="Foundations.Notation.Reflexivity.html#351" class="Field">refl</a>
+  <a id="557" href="Data.Container.Instances.Map.html#466" class="Function">Lawful-Map-Container</a> <a id="578" class="Symbol">.</a><a id="579" href="Meta.Effect.Map.Lawful.html#490" class="Field">map-pres-comp</a> <a id="593" class="Symbol">=</a> <a id="595" href="Foundations.Notation.Reflexivity.html#351" class="Field">refl</a>
+  <a id="602" class="Symbol">{-#</a> <a id="606" class="Keyword">INCOHERENT</a> <a id="617" href="Data.Container.Instances.Map.html#466" class="Function">Lawful-Map-Container</a> <a id="638" class="Symbol">#-}</a>
+</pre></body></html>
